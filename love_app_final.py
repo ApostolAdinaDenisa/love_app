@@ -4,18 +4,17 @@ import matplotlib.pyplot as plt
 import os
 from datetime import datetime
 
-# Set background image + text color white
+# Set background color roz + text negru
 st.markdown(
     """
     <style>
     .stApp {
-        background: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80") no-repeat center center fixed;
-        background-size: cover;
-        color: white;
+        background-color: #ffc0cb;  /* roz pastel */
+        color: black;
     }
     .css-1d391kg, .css-1offfwp, .css-1v3fvcr {
-        background-color: rgba(0,0,0,0.4) !important;
-        color: white !important;
+        background-color: rgba(255,192,203,0.4) !important;  /* transparent roz */
+        color: black !important;
     }
     </style>
     """,
