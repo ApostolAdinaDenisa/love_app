@@ -4,25 +4,25 @@ import matplotlib.pyplot as plt
 import os
 from datetime import datetime
 
-# Fundal roz pastel + text închis
+# Set background image + text color white
 st.markdown(
     """
     <style>
     .stApp {
-        background-color: #ffc0cb;
-        color: #330033;
+        background: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80") no-repeat center center fixed;
+        background-size: cover;
+        color: white;
     }
-    /* Override pentru componente cu fundal implicit alb */
     .css-1d391kg, .css-1offfwp, .css-1v3fvcr {
-        background-color: rgba(255, 192, 203, 0.6) !important;
-        color: #330033 !important;
+        background-color: rgba(0,0,0,0.4) !important;
+        color: white !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Titlu și GIF drăguț
+# Title & GIF
 st.title("💗 How Are You Today, My Love?")
 st.image("https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", width=200)
 st.markdown("Tell me honestly... 🥹")
@@ -45,12 +45,14 @@ with col2:
     cuddly = st.slider("How cuddly are you feeling? 🐻", 0, 10, 5)
     sleep = st.slider("How many hours did you sleep? 💤", 0, 12, 7)
 
-# Calcul scor
+# Score calculation with normalization
 def calculate_score(love, energy, missing, peace, cuddly):
-    score = love * 2 + peace + cuddly + energy - missing // 2
-    return max(0, min(100, score))
+    raw_score = love * 2 + peace + cuddly + energy - missing * 0.5
+    max_score = 20 + 10 + 10 + 10  # 50 max score (missing = 0)
+    normalized_score = round((raw_score / max_score) * 100)
+    return max(0, min(100, normalized_score))
 
-# Salvează date
+# Save data
 def save_data(name, score, sleep, timestamp):
     new_data = pd.DataFrame({
         "Name": [name],
@@ -67,7 +69,7 @@ def save_data(name, score, sleep, timestamp):
 
     df.to_csv("mood_log.csv", index=False)
 
-# Afișează rezultat la apăsarea butonului
+# Result
 if st.button("💌 Send Me Your Mood"):
     score = calculate_score(love, energy, missing, peace, cuddly)
 
@@ -83,7 +85,7 @@ if st.button("💌 Send Me Your Mood"):
 
     save_data(name, score, sleep, now)
 
-# Grafice
+# Charts
 if os.path.exists("mood_log.csv"):
     df = pd.read_csv("mood_log.csv")
 
@@ -103,7 +105,7 @@ if os.path.exists("mood_log.csv"):
     ax2.set_ylabel("Number of Days")
     st.pyplot(fig2)
 
-# Mesaj final de dragoste la apăsarea OK
+# Final love message
 st.markdown("---")
 if st.button("✅ OK"):
     st.balloons()
